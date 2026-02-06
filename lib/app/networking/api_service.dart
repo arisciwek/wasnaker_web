@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import '/config/decoders.dart';
+import 'package:flutter_app/config/storage_keys.dart';
+import '/bootstrap/decoders.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /* ApiService
 | -------------------------------------------------------------------------
 | Define your API endpoints
-| Learn more https://nylo.dev/docs/6.x/networking
+| Learn more https://nylo.dev/docs/7.x/networking
 |-------------------------------------------------------------------------- */
 
 class ApiService extends NyApiService {
-  ApiService({BuildContext? buildContext})
+  ApiService()
       : super(
-          buildContext,
           decoders: modelDecoders,
+          useNetworkLogger: true,
           // baseOptions: (BaseOptions baseOptions) {
           //   return baseOptions
           //             ..connectTimeout = Duration(seconds: 5)
@@ -26,28 +25,22 @@ class ApiService extends NyApiService {
   String get baseUrl => getEnv('API_BASE_URL');
 
   @override
-  get interceptors => {
-        if (getEnv('APP_DEBUG') == true) PrettyDioLogger: PrettyDioLogger(),
-        // MyCustomInterceptor: MyCustomInterceptor(),
-      };
-
-  Future fetchTestData() async {
-    return await network(
-      request: (request) => request.get("/endpoint-path"),
-    );
-  }
+  Map<Type, Interceptor> get interceptors => {
+    ...super.interceptors,
+    // MyCustomInterceptor: MyCustomInterceptor(),
+  };
 
   /// Example to fetch the Nylo repository info from Github
-  Future githubInfo() async {
+  Future<Map<String, dynamic>?> githubInfo() async {
     return await network(
       request: (request) =>
           request.get("https://api.github.com/repos/nylo-core/nylo"),
-      cacheKey: "github_nylo_info", // Optional: Cache the response
-      cacheDuration: const Duration(hours: 1),
+      // cacheKey: "github_nylo_info", // Optional: Cache the response
+      // cacheDuration: const Duration(hours: 1),
     );
   }
 
-  /* Helpers
+/* Helpers
   |-------------------------------------------------------------------------- */
 
   /* Authentication Headers
@@ -58,9 +51,9 @@ class ApiService extends NyApiService {
 
   // @override
   // Future<RequestHeaders> setAuthHeaders(RequestHeaders headers) async {
-  //   String? myAuthToken = await Keys.bearerToken.read();
+  //   String? myAuthToken = await StorageKeysConfig.bearerToken.read();
   //   if (myAuthToken != null) {
-  //     headers.addBearerToken( myAuthToken );
+  //     headers.addBearerToken(myAuthToken);
   //   }
   //   return headers;
   // }
@@ -87,6 +80,6 @@ class ApiService extends NyApiService {
   // refreshToken(Dio dio) async {
   //  dynamic response = (await dio.get("https://example.com/refresh-token")).data;
   //  // Save the new token
-  //   await Keys.bearerToken.save(response['token']);
+  //   await StorageKeysConfig.bearerToken.save(response['token']);
   // }
 }

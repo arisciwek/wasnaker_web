@@ -1,34 +1,69 @@
 import 'package:flutter/material.dart';
-import '/bootstrap/extensions.dart';
 import '/resources/widgets/buttons/abstract/app_button.dart';
 
-class PrimaryButton extends AppButton {
-  final Color? color;
+class PrimaryButton extends StatefulAppButton {
+  final Color? backgroundColor;
+  final Color? contentColor;
+  final double? elevation;
 
-  const PrimaryButton({
+  PrimaryButton({
     super.key,
     required super.text,
     super.onPressed,
-    this.color,
+    super.submitForm,
+    super.onFailure,
+    super.showToastError = true,
+    super.loadingStyle,
     super.width,
     super.height,
+    super.animationStyle,
+    super.splashStyle,
+    this.backgroundColor,
+    this.contentColor,
+    this.elevation,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? context.color.buttonBackground,
-        padding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+  Widget buildButton(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final bgColor = backgroundColor ?? theme.colorScheme.primary;
+    final fgColor = contentColor ?? theme.colorScheme.onPrimary;
+    final radius = BorderRadius.circular(14);
+
+    return Container(
+      width: width ?? double.infinity,
+      height: height,
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: radius,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400.withValues(alpha: isDark ? 0.3 : 0.25),
+            blurRadius: elevation ?? 12,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+          if (!isDark)
+            BoxShadow(
+              color: Colors.grey.shade400.withValues(alpha: 0.15),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+              spreadRadius: 0,
+            ),
+        ],
       ),
-      child: buildButtonChild(
-        context,
-        textColor: context.color.buttonContent,
-        backgroundColor: Colors.transparent,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: fgColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.3,
+          ),
+        ),
       ),
     );
   }

@@ -1,122 +1,158 @@
 import '/bootstrap/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
-class ToastNotification extends StatelessWidget {
-  const ToastNotification(ToastMeta toastMeta, {Function? onDismiss, super.key})
-      : _toastMeta = toastMeta,
-        _dismiss = onDismiss;
+/// ToastNotification provides a registry of toast notification styles.
+/// Use [ToastNotification.styles] to get the default styles map.
+class ToastNotification {
+  /// Helper to create a toast style with defaults.
+  ///
+  /// Parameters:
+  /// - [icon] - The icon widget to display
+  /// - [color] - Background color for the icon section
+  /// - [defaultTitle] - Title shown when no title is provided
+  /// - [position] - Where the toast appears (top, bottom, center)
+  /// - [duration] - How long the toast is displayed
+  /// - [animation] - Animation style for the toast (e.g., ToastAnimation.fade())
+  static ToastStyleFactory style({
+    required Widget icon,
+    required Color color,
+    required String defaultTitle,
+    ToastNotificationPosition? position,
+    Duration? duration,
+    ToastAnimation? animation,
+    ToastAnimation? reverseAnimation,
+    bool? dismissOtherToast,
+    TextDirection? textDirection,
+    Alignment? alignment,
+    Axis? axis,
+    Offset? startOffset,
+    Offset? endOffset,
+    Offset? reverseStartOffset,
+    Offset? reverseEndOffset,
+    bool? isHideKeyboard,
+    bool? isIgnoring,
+    CustomAnimationBuilder? animationBuilder,
+    CustomAnimationBuilder? reverseAnimBuilder,
+    ToastOnInitStateCallback? onInitState,
+    Widget Function(ToastMeta toastMeta)? builder,
+  }) {
+    return (ToastMeta meta, void Function(ToastMeta) updateMeta) {
+      final updatedMeta = meta.copyWith(
+        icon: meta.icon ?? icon,
+        color: meta.color ?? color,
+        title: meta.title.isEmpty ? defaultTitle : null,
+        position: position,
+        duration: duration,
+        animation: meta.animation ?? animation,
+        reverseAnimation: meta.reverseAnimation ?? reverseAnimation,
+        dismissOtherToast: meta.dismissOtherToast ?? dismissOtherToast,
+        textDirection: meta.textDirection ?? textDirection,
+        alignment: meta.alignment ?? alignment,
+        axis: meta.axis ?? axis,
+        startOffset: meta.startOffset ?? startOffset,
+        endOffset: meta.endOffset ?? endOffset,
+        reverseStartOffset: meta.reverseStartOffset ?? reverseStartOffset,
+        reverseEndOffset: meta.reverseEndOffset ?? reverseEndOffset,
+        isHideKeyboard: meta.isHideKeyboard ?? isHideKeyboard,
+        isIgnoring: meta.isIgnoring ?? isIgnoring,
+        animationBuilder: meta.animationBuilder ?? animationBuilder,
+        reverseAnimBuilder: meta.reverseAnimBuilder ?? reverseAnimBuilder,
+        onInitState: meta.onInitState ?? onInitState,
+      );
+      updateMeta(updatedMeta);
+      if (builder != null) {
+        return builder(updatedMeta);
+      }
+      return _ToastNotificationBase(updatedMeta);
+    };
+  }
+}
 
-  final Function? _dismiss;
+/// Base toast notification widget that renders the common layout.
+class _ToastNotificationBase extends StatelessWidget {
+  const _ToastNotificationBase(this._toastMeta);
+
   final ToastMeta _toastMeta;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        height: 100,
-        decoration: BoxDecoration(
-          color: context.color.toastNotificationBackground,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: context.isThemeDark
-                  ? Colors.transparent
-                  : Colors.grey.withAlpha((255.0 * 0.1).round()),
-              spreadRadius: 3,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Stack(children: [
-          InkWell(
-            onTap: () {
-              if (_toastMeta.action != null) {
-                _toastMeta.action!();
-              }
-            },
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          height: 95,
+          decoration: BoxDecoration(
+            color: context.color.general.background,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: context.isThemeDark
+                ? null
+                : [
+                    BoxShadow(
+                      color: Colors.grey.withAlpha(25),
+                      spreadRadius: 3,
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+          ),
+          child: InkWell(
+            onTap:
+                _toastMeta.action != null ? () => _toastMeta.action!() : null,
+            borderRadius: BorderRadius.circular(16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Icon section
                 Container(
-                  decoration: BoxDecoration(
-                    color: _toastMeta.color,
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        topLeft: Radius.circular(8)),
-                  ),
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  margin: const EdgeInsets.only(right: 12),
+                  width: 50,
                   child: Center(child: _toastMeta.icon),
                 ),
+                // Content section
                 Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 40),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          _toastMeta.title.tr(),
-                        ).bodyLarge(
-                            color: context.color.content,
-                            fontWeight: FontWeight.bold),
-                        Flexible(
-                          child: Text(
+                        Text(_toastMeta.title.tr()).bodyLarge(
+                          color: context.color.general.content,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        if (_toastMeta.description.isNotEmpty)
+                          Text(
                             _toastMeta.description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ).bodyMedium(
-                              color: context.color.content
-                                  .withAlpha((255.0 * 0.8).round())),
-                        ),
+                            color: context.color.general.content.withAlpha(200),
+                          ),
                       ],
+                    ),
+                  ),
+                ),
+                // Dismiss button
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: IconButton(
+                    onPressed: _toastMeta.dismiss != null
+                        ? () => _toastMeta.dismiss!()
+                        : null,
+                    icon: Icon(
+                      Icons.close,
+                      size: 18,
+                      color: context.isThemeDark
+                          ? Colors.white70
+                          : Colors.grey.shade600,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          Positioned(
-            top: 12,
-            right: 12,
-            bottom: 12,
-            child: Center(
-              child: Container(
-                height: 30,
-                width: 30,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: context.isThemeDark
-                        ? Colors.white30
-                        : "#f2f2f2".toHexColor(),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      if (_dismiss != null) {
-                        _dismiss();
-                      }
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      color: context.isThemeDark
-                          ? Colors.white
-                          : "#878787".toHexColor(),
-                      size: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
-        ]),
+        ),
       ),
     );
   }

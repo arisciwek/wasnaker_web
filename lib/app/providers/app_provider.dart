@@ -1,46 +1,44 @@
-import '/config/keys.dart';
-import '/app/forms/style/form_style.dart';
-import '/config/form_casts.dart';
-import '/config/decoders.dart';
+import '/config/storage_keys.dart';
+import '/config/toast_notification.dart';
+import '/bootstrap/decoders.dart';
 import '/config/design.dart';
-import '/config/theme.dart';
-import '/config/validation_rules.dart';
+import '/bootstrap/theme.dart';
 import '/config/localization.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class AppProvider implements NyProvider {
+
   @override
-  boot(Nylo nylo) async {
-    await NyLocalization.instance.init(
-      localeType: localeType,
-      languageCode: languageCode,
-      assetsDirectory: assetsDirectory,
+  setup(Nylo nylo) async {
+    await nylo.configure(
+      localization: NyLocalizationConfig(
+          languageCode: LocalizationConfig.languageCode,
+          localeType: LocalizationConfig.localeType,
+          assetsDirectory: LocalizationConfig.assetsDirectory
+      ),
+      loader: DesignConfig.loader,
+      logo: DesignConfig.logo,
+      themes: appThemes,
+      initialThemeId: 'light_theme',
+      toastNotifications: ToastNotificationConfig.styles,
+      modelDecoders: modelDecoders,
+      controllers: controllers,
+      apiDecoders: apiDecoders,
+      authKey: StorageKeysConfig.auth,
+      syncKeys: StorageKeysConfig.syncedOnBoot,
+      monitorAppUsage: false,
+      showDateTimeInLogs: false,
+      broadcastEvents: false,
+      useErrorStack: true,
     );
-
-    FormStyle formStyle = FormStyle();
-
-    nylo.addLoader(loader);
-    nylo.addLogo(logo);
-    nylo.addThemes(appThemes);
-    nylo.addToastNotification(getToastNotificationWidget);
-    nylo.addValidationRules(validationRules);
-    nylo.addModelDecoders(modelDecoders);
-    nylo.addControllers(controllers);
-    nylo.addApiDecoders(apiDecoders);
-    nylo.addFormCasts(formCasts);
-    nylo.useErrorStack();
-    nylo.addFormStyle(formStyle);
-    nylo.addAuthKey(Keys.auth);
-    await nylo.syncKeys(Keys.syncedOnBoot);
-
-    // Optional
-    // nylo.showDateTimeInLogs(); // Show date time in logs
-    // nylo.monitorAppUsage(); // Monitor the app usage
-    // nylo.broadcastEvents(); // Broadcast events in the app
 
     return nylo;
   }
 
   @override
-  afterBoot(Nylo nylo) async {}
+  boot(Nylo nylo) async {
+    // NyLogger.onLog = (NyLogEntry entry) {
+    //   // Listen to log entries
+    // };
+  }
 }

@@ -5,8 +5,7 @@ void main(arguments) => _MotivationalQuoteCommand(arguments).run();
 /// Motivational Quote Command
 ///
 /// Usage:
-///   [From Terminal] dart run nylo_framework:main motivational:quote
-///   [With Metro]    metro motivational:quote
+///   [From Terminal] metro motivational:quote
 class _MotivationalQuoteCommand extends NyCustomCommand {
   _MotivationalQuoteCommand(super.arguments);
 
@@ -23,7 +22,8 @@ class _MotivationalQuoteCommand extends NyCustomCommand {
     }
 
     // confirmation prompt
-    final response = confirm('$responseName, would you like to get a motivational quote?');
+    final response =
+        confirm('$responseName, would you like to get a motivational quote?');
     if (response == false) {
       print('No problem, have a great day!');
       return;
@@ -32,7 +32,8 @@ class _MotivationalQuoteCommand extends NyCustomCommand {
     // show a spinner while fetching the quote
     await withSpinner(
       task: () async {
-        final List<dynamic>? data = await api((request) => request.get('https://zenquotes.io/api/today'));
+        final List<dynamic>? data = await api(
+            (request) => request.get('https://zenquotes.io/api/today'));
 
         if (data == null || data.isEmpty) {
           error('\nNo data found');
@@ -55,7 +56,6 @@ class _MotivationalQuoteCommand extends NyCustomCommand {
   }
 }
 
-
 /// Example extension to add a printQuote method to NyCustomCommand
 extension QuoteFormatter on NyCustomCommand {
   /// Prints a beautifully formatted quote in the console
@@ -63,8 +63,8 @@ extension QuoteFormatter on NyCustomCommand {
     required String quote,
     required String author,
     String borderColor = '\x1B[36m', // Cyan
-    String quoteColor = '\x1B[33m',   // Yellow
-    String authorColor = '\x1B[35m',  // Magenta
+    String quoteColor = '\x1B[33m', // Yellow
+    String authorColor = '\x1B[35m', // Magenta
     int maxWidth = 60,
   }) {
     // Reset code
@@ -112,7 +112,8 @@ extension QuoteFormatter on NyCustomCommand {
 
     // Author line
     final authorPadding = width - authorText.length;
-    final authorLine = '$borderColor│${' ' * authorPadding}$authorColor$authorText$reset$borderColor│$reset';
+    final authorLine =
+        '$borderColor│${' ' * authorPadding}$authorColor$authorText$reset$borderColor│$reset';
     print(authorLine);
 
     // Bottom border

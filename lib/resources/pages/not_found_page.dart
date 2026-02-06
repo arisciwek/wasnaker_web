@@ -9,7 +9,9 @@ class NotFoundPage extends NyStatefulWidget {
 
 class _NotFoundPageState extends NyState<NotFoundPage> {
   @override
-  get init => () {};
+  get init => () {
+    
+  };
 
   @override
   Widget view(BuildContext context) {

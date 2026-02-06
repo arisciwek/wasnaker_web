@@ -1,0 +1,31 @@
+import 'package:nylo_framework/nylo_framework.dart';
+
+/* App
+|--------------------------------------------------------------------------
+| Application configuration settings.
+| Learn more: https://nylo.dev/docs/7.x/configuration
+| -------------------------------------------------------------------------
+| You can access these configuration values throughout your app using:
+| `AppConfig.appName`, `AppConfig.version`, etc.
+|-------------------------------------------------------------------------- */
+
+final class AppConfig {
+  // The name of the application.
+  static final String appName = getEnv('APP_NAME', defaultValue: 'Nylo');
+
+  // The version of the application.
+  static final String version = getEnv('APP_VERSION', defaultValue: '1.0.0');
+
+  // The current environment of the application.
+  static final String environment =
+      getEnv('APP_ENV', defaultValue: 'development');
+
+  // The base URL for the application's API.
+  static final String apiBaseUrl = "https://api.myflutterapp.com";
+
+  // The path to the assets directory.
+  static final String assetPath = getEnv('ASSET_PATH', defaultValue: 'public');
+
+  // Whether to show the splash screen on app startup.
+  static final bool showSplashScreen = getEnv('SHOW_SPLASH_SCREEN', defaultValue: true);
+}

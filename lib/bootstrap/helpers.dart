@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/resources/themes/styles/color_styles.dart';
+import '/resources/themes/color_styles.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /* Helpers
@@ -8,7 +8,7 @@ import 'package:nylo_framework/nylo_framework.dart';
 |-------------------------------------------------------------------------- */
 
 /// helper to find correct color from the [context].
-class ThemeColor {
+class ThemeColorResolver {
   static ColorStyles get(BuildContext context, {String? themeId}) =>
       nyColorStyle<ColorStyles>(context, themeId: themeId);
 

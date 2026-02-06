@@ -2,22 +2,27 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 /* Register Form
 |--------------------------------------------------------------------------
-| Usage: https://nylo.dev/docs/6.x/forms#how-it-works
-| Casts: https://nylo.dev/docs/6.x/forms#form-casts
-| Validation Rules: https://nylo.dev/docs/6.x/validation#validation-rules
+| Usage: https://nylo.dev/docs/7.x/forms#how-it-works
+| Casts: https://nylo.dev/docs/7.x/forms#form-casts
+| Validation Rules: https://nylo.dev/docs/7.x/validation#validation-rules
 |-------------------------------------------------------------------------- */
 
-class RegisterForm extends NyFormData {
-  RegisterForm({String? name}) : super(name ?? "register");
+class RegisterForm extends NyFormWidget {
+  RegisterForm({super.key, super.submitButton, super.onSubmit, super.onFailure});
 
   @override
   fields() => [
-        Field.text("Name",
-            autofocus: true,
-            validate: FormValidator.notEmpty(),
-            style: "compact"),
-        Field.email("Email", validate: FormValidator.email(), style: "compact"),
-        Field.password("Password",
-            validate: FormValidator.password(strength: 1), style: "compact"),
+        Field.text(
+          "Name",
+          autofocus: true,
+          validator: FormValidator.notEmpty(),
+        ),
+        Field.email("Email", validator: FormValidator.email()),
+        Field.password(
+          "Password",
+          validator: FormValidator.password(strength: 1),
+        ),
       ];
+
+  static NyFormActions get actions => const NyFormActions('RegisterForm');
 }

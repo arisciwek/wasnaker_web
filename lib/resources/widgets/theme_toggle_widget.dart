@@ -29,12 +29,18 @@ class ThemeToggle extends StatelessWidget {
     return Column(
       children: [
         Switch(
+            trackOutlineColor: WidgetStateProperty.all(
+              NyColor(
+                light: Colors.grey,
+                dark: Colors.blue.shade50,
+              ).toColor(context),
+            ),
             value: isThemeDark,
-            onChanged: (_) {
-              NyTheme.set(context,
-                  id: getEnv(isThemeDark != true
-                      ? 'DARK_THEME_ID'
-                      : 'LIGHT_THEME_ID'));
+            onChanged: (value) {
+              NyTheme.set(
+                context,
+                id: value ? 'dark_theme' : 'light_theme',
+              );
             }),
         Text("${isThemeDark ? "Dark" : "Light"} Mode"),
       ],

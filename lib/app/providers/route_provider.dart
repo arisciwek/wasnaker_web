@@ -2,8 +2,9 @@ import '/routes/router.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class RouteProvider implements NyProvider {
+
   @override
-  boot(Nylo nylo) async {
+  setup(Nylo nylo) async {
     nylo.addRouter(appRouter());
 
     // Optional
@@ -12,7 +13,7 @@ class RouteProvider implements NyProvider {
   }
 
   @override
-  afterBoot(Nylo nylo) async {
+  boot(Nylo nylo) async {
     nylo.initRoutes();
   }
 

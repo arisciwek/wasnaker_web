@@ -7,24 +7,25 @@ import 'package:nylo_framework/nylo_framework.dart';
 |
 | * [Tip] Create new route guards using the CLI 🚀
 | Run the below in the terminal to create a new route guard.
-| "dart run nylo_framework:main make:route_guard check_subscription"
+| "metro make:route_guard check_subscription"
 |
-| Learn more https://nylo.dev/docs/6.x/router#route-guards
+| Learn more https://nylo.dev/docs/7.x/router#route-guards
 |-------------------------------------------------------------------------- */
 
 class AuthRouteGuard extends NyRouteGuard {
   AuthRouteGuard();
 
   @override
-  onRequest(PageRequest pageRequest) async {
-    // print(data); // will give you access to the data passed to the route
-    // print(queryParameters); // will give you access to the BuildContext
+  Future<GuardResult> onBefore(RouteContext context) async {
+    // context.data - data passed to the route
+    // context.queryParameters - query parameters from the URL
+    // context.routeName - the route being navigated to
 
-    bool isLoggedIn = (await Auth.isAuthenticated());
+    bool isLoggedIn = await Auth.isAuthenticated();
     if (!isLoggedIn) {
       return redirect(HomePage.path);
     }
 
-    return pageRequest;
+    return next();
   }
 }

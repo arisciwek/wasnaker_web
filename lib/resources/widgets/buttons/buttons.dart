@@ -8,92 +8,76 @@ import '/resources/widgets/buttons/partials/outlined_button_widget.dart' as app;
 import '/resources/widgets/buttons/partials/icon_button_widget.dart' as app;
 import 'package:flutter/material.dart';
 import 'package:nylo_framework/nylo_framework.dart';
+export 'package:nylo_framework/nylo_framework.dart'
+    show ButtonAnimationStyle, ButtonSplashStyle, ButtonSplashType;
+
+/// Default button height
+final double _buttonHeight = 52.0;
 
 class Button {
   /// Primary button
   static Widget primary({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
-    Color? color,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        loadingStyle: loadingStyle,
-        child: (pressed) {
-          return PrimaryButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            width: width,
-            height: height,
-          );
-        });
+    return PrimaryButton(
+      text: text,
+      onPressed: onPressed,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+    );
   }
 
   /// Secondary button
   static Widget secondary({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
-    Color? color,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        loadingStyle: loadingStyle,
-        child: (pressed) {
-          return SecondaryButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            width: width,
-            height: height,
-          );
-        });
+    return SecondaryButton(
+      text: text,
+      onPressed: onPressed,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      backgroundColor: Colors.lightGreen.shade800,
+      contentColor: Colors.white,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+    );
   }
 
   /// Outlined button
   static Widget outlined({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     Color? borderColor,
     Color? textColor,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-      onSubmit: (onPressed, submitForm),
+    return app.OutlinedButton(
+      text: text,
+      onPressed: onPressed,
       onFailure: onFailure,
       showToastError: showToastError,
-      loadingStyle: loadingStyle,
-      child: (pressed) {
-        return app.OutlinedButton(
-          text: text,
-          onPressed: pressed,
-          borderColor: borderColor,
-          textColor: textColor,
-          width: width,
-          height: height,
-        );
-      },
+      loadingStyle: LoadingStyle.skeletonizer(),
+      borderColor: borderColor,
+      textColor: textColor,
+      width: width,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight()
     );
   }
 
@@ -101,58 +85,47 @@ class Button {
   static Widget textOnly({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     Color? textColor,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        loadingStyle: loadingStyle,
-        child: (pressed) {
-          return TextOnlyButton(
-            text: text,
-            onPressed: pressed,
-            textColor: textColor,
-            width: width,
-            height: height,
-          );
-        });
+    return TextOnlyButton(
+      text: text,
+      onPressed: onPressed,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      contentColor: textColor,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.bounce(),
+      splashStyle: ButtonSplashStyle.highlight(),
+    );
   }
 
   /// Icon button
   static Widget icon({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     required Widget icon,
     Color? color,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-      onSubmit: (onPressed, submitForm),
+    return app.IconButton(
+      text: text,
+      onPressed: onPressed,
       onFailure: onFailure,
       showToastError: showToastError,
-      loadingStyle: loadingStyle,
-      child: (pressed) {
-        return app.IconButton(
-          text: text,
-          onPressed: pressed,
-          icon: icon,
-          color: color,
-          width: width,
-          height: height,
-        );
-      },
+      loadingStyle: LoadingStyle.skeletonizer(),
+      icon: icon,
+      backgroundColor: color,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight()
     );
   }
 
@@ -162,84 +135,68 @@ class Button {
     VoidCallback? onPressed,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
-    (dynamic, Function(dynamic data))? submitForm,
-    List<Color> gradientColors = const [Colors.blue, Colors.purple],
+    List<Color>? gradientColors,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        loadingStyle: loadingStyle,
-        child: (pressed) {
-          return GradientButton(
-            text: text,
-            onPressed: pressed,
-            gradientColors: gradientColors,
-            width: width,
-            height: height,
-          );
-        });
+    return GradientButton(
+      text: text,
+      onPressed: onPressed,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      gradientColors: gradientColors,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight()
+    );
   }
 
   /// Rounded button
   static Widget rounded({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
-    Color? color,
+    Color? backgroundColor,
     BorderRadius? borderRadius,
     double? width,
-    double height = 50,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        loadingStyle: loadingStyle,
-        child: (pressed) {
-          return RoundedButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            borderRadius: borderRadius,
-            width: width,
-            height: height,
-          );
-        });
+    return RoundedButton(
+      text: text,
+      onPressed: onPressed,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      backgroundColor: backgroundColor,
+      borderRadius: borderRadius,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight()
+    );
   }
 
   /// Transparency button
   static Widget transparency({
     required String text,
     VoidCallback? onPressed,
-    (dynamic, Function(dynamic data))? submitForm,
     Function(dynamic error)? onFailure,
     bool showToastError = true,
     Color? color,
-    BorderRadius? borderRadius,
     double? width,
-    double height = 30,
-    LoadingStyle? loadingStyle,
   }) {
-    return ButtonState(
-        onSubmit: (onPressed, submitForm),
-        onFailure: onFailure,
-        showToastError: showToastError,
-        loadingStyle: loadingStyle,
-        child: (pressed) {
-          return TransparencyButton(
-            text: text,
-            onPressed: pressed,
-            color: color,
-            width: width,
-            height: height,
-          );
-        });
+    return TransparencyButton(
+      text: text,
+      onPressed: onPressed,
+      onFailure: onFailure,
+      showToastError: showToastError,
+      loadingStyle: LoadingStyle.skeletonizer(),
+      contentColor: color,
+      width: width,
+      height: _buttonHeight,
+      animationStyle: ButtonAnimationStyle.clickable(),
+      splashStyle: ButtonSplashStyle.highlight()
+    );
   }
 }

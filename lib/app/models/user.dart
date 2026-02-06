@@ -4,7 +4,7 @@ class User extends Model {
   String? name;
   String? email;
 
-  static StorageKey key = 'user';
+  static final StorageKey key = 'user';
 
   User() : super(key: key);
 

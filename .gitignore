@@ -39,5 +39,22 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Android build artifacts
+android/app/.cxx/
+
+# iOS build artifacts
+ios/build/
+
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Node
+package-lock.json
+
+# Environment files
+.env
+lib/bootstrap/env.g.dart
+
+# Claude related
+CLAUDE.md
+.claude

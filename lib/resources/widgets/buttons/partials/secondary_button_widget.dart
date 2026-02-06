@@ -1,34 +1,64 @@
 import 'package:flutter/material.dart';
-import '/bootstrap/extensions.dart';
 import '/resources/widgets/buttons/abstract/app_button.dart';
 
-class SecondaryButton extends AppButton {
-  final Color? color;
+class SecondaryButton extends StatefulAppButton {
+  final Color? backgroundColor;
+  final Color? contentColor;
 
-  const SecondaryButton({
+  SecondaryButton({
     super.key,
     required super.text,
     super.onPressed,
-    this.color,
+    super.submitForm,
+    super.onFailure,
+    super.showToastError = true,
+    super.loadingStyle,
     super.width,
     super.height,
+    super.animationStyle,
+    super.splashStyle,
+    this.contentColor,
+    this.backgroundColor,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? context.color.buttonSecondaryBackground,
-        padding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+  Widget buildButton(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final bgColor = backgroundColor ??
+        (isDark
+            ? theme.colorScheme.surfaceContainerHighest
+            : theme.colorScheme.surfaceContainerHigh);
+    final fgColor = contentColor ?? theme.colorScheme.onSurface;
+    final radius = BorderRadius.circular(14);
+
+    return Container(
+      width: width ?? double.infinity,
+      height: height,
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: radius,
+        boxShadow: isDark
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
-      child: buildButtonChild(
-        context,
-        textColor: context.color.buttonSecondaryContent,
-        backgroundColor: Colors.transparent,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: fgColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.2,
+          ),
+        ),
       ),
     );
   }

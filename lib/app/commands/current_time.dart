@@ -6,8 +6,7 @@ void main(arguments) => _CurrentTimeCommand(arguments).run();
 /// Current Time Command
 ///
 /// Usage:
-///   [From Terminal] dart run nylo_framework:main app:current_time
-///   [With Metro]    metro app:current_time
+///   [From Terminal] metro app:current_time
 class _CurrentTimeCommand extends NyCustomCommand {
   _CurrentTimeCommand(super.arguments);
 

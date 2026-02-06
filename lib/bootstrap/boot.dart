@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '/config/app.dart';
 import '/resources/widgets/splash_screen.dart';
-import '/bootstrap/app.dart';
-import '/config/providers.dart';
+import '../resources/widgets/main_widget.dart';
+import '/bootstrap/providers.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 /* Boot
@@ -11,33 +12,33 @@ import 'package:nylo_framework/nylo_framework.dart';
 |-------------------------------------------------------------------------- */
 
 class Boot {
-  /// This method is called to initialize Nylo.
-  static Future<Nylo> nylo() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  /// Returns a [BootConfig] containing the setup and boot functions.
+  static BootConfig nylo() => BootConfig(
+        setup: () async {
+          WidgetsFlutterBinding.ensureInitialized();
 
-    if (getEnv('SHOW_SPLASH_SCREEN', defaultValue: false)) {
-      runApp(SplashScreen.app());
-    }
+          if (AppConfig.showSplashScreen) {
+            runApp(SplashScreen.app());
+          }
 
-    await _setup();
-    return await bootApplication(providers);
-  }
+          await _init();
+          return await setupApplication(providers);
+        },
+        boot: (Nylo nylo) async {
+          await bootFinished(nylo, providers);
 
-  /// This method is called after Nylo is initialized.
-  static Future<void> finished(Nylo nylo) async {
-    await bootFinished(nylo, providers);
-
-    runApp(Main(nylo));
-  }
+          runApp(Main(nylo));
+        },
+      );
 }
 
-/* Setup
+/* Init
 |--------------------------------------------------------------------------
-| You can use _setup to initialize classes, variables, etc.
+| You can use _init to initialize classes, variables, etc.
 | It's run before your app providers are booted.
 |-------------------------------------------------------------------------- */
 
-_setup() async {
+_init() async {
   /// Example: Initializing StorageConfig
   // StorageConfig.init(
   //   androidOptions: AndroidOptions(

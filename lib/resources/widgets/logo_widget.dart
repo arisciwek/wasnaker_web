@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nylo_framework/nylo_framework.dart';
+import '/resources/widgets/local_asset_widget.dart';
 
 class Logo extends StatelessWidget {
   const Logo({super.key, this.height, this.width});
@@ -8,10 +8,10 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
+    return LocalAsset.image(
       "logo.png",
-      height: height ?? 100,
-      width: width ?? 100,
-    ).localAsset();
+      height: height ?? 80,
+      width: width ?? 80,
+    );
   }
 }

@@ -16,14 +16,14 @@ This project is open source and MIT-licenced, we welcome any contributions. You 
 
 ## Features
 Some core features available
-* [Routing](https://nylo.dev/docs/6.x/router).
-* [Themes and styling](https://nylo.dev/docs/6.x/themes-and-styling).
-* [Localization](https://nylo.dev/docs/6.x/localization).
-* [CLI for generating project files](https://nylo.dev/docs/6.x/metro).
-* [Elegant API Services for Networking](https://nylo.dev/docs/6.x/networking).
-* [Creating App Icons](https://nylo.dev/docs/6.x/app-icons).
-* [Project Configuration](https://nylo.dev/docs/6.x/configuration).
-* [Streamlined Project Structure](https://nylo.dev/docs/6.x/directory-structure).
+* [Routing](https://nylo.dev/docs/7.x/router).
+* [Themes and styling](https://nylo.dev/docs/7.x/themes-and-styling).
+* [Localization](https://nylo.dev/docs/7.x/localization).
+* [CLI for generating project files](https://nylo.dev/docs/7.x/metro).
+* [Elegant API Services for Networking](https://nylo.dev/docs/7.x/networking).
+* [Creating App Icons](https://nylo.dev/docs/7.x/app-icons).
+* [Project Configuration](https://nylo.dev/docs/7.x/configuration).
+* [Streamlined Project Structure](https://nylo.dev/docs/7.x/directory-structure).
 
 ## Requirements
 * Flutter >= 3.24.0
@@ -38,7 +38,7 @@ git clone https://github.com/nylo-core/nylo.git
 View our [docs](https://nylo.dev/docs) and visit [nylo.dev](https://nylo.dev)
 
 ## Changelog
-Please see [CHANGELOG](https://github.com/nylo-core/framework/blob/6.x/CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG](https://github.com/nylo-core/framework/blob/7.x/CHANGELOG.md) for more information what has changed recently.
 
 ## Social
 * [Twitter](https://twitter.com/nylo_dev)
@@ -63,11 +63,10 @@ If you discover any security related issues, please email support@nylo.dev inste
 * [israelins85](https://github.com/israelins85)
 * [voytech-net](https://github.com/voytech-net)
 * [sadobass](https://github.com/sadobass)
-* [Im-PJ](https://github.com/Im-PJ)
 
 ## Contributing
 
-Please see <a href="https://nylo.dev/docs/6.x/contributions" target="_BLANK">CONTRIBUTING</a> for details.
+Please see <a href="https://nylo.dev/docs/7.x/contributions" target="_BLANK">CONTRIBUTING</a> for details.
 
 ## Licence
 

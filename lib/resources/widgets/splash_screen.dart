@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 import '/resources/widgets/logo_widget.dart';
 import 'dart:math';
 
@@ -21,7 +22,7 @@ class SplashScreen extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Logo(), SizedBox(height: 50), AnimatedLoader()],
+            children: [Logo(), Spacing.vertical(50), AnimatedLoader()],
           ),
         ),
       ),
