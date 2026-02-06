@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nylo_support/testing/ny_testing.dart';
 import 'package:nylo_support/helpers/src/ny_env.dart';
 import 'package:nylo_framework/nylo_framework.dart';
-import 'package:flutter_app/resources/pages/home_page.dart';
-import 'package:flutter_app/resources/widgets/theme_toggle_widget.dart';
-import 'package:flutter_app/resources/widgets/logo_widget.dart';
-import 'package:flutter_app/bootstrap/providers.dart';
-import 'package:flutter_app/bootstrap/env.g.dart';
+import '/resources/pages/home_page.dart';
+import '/resources/widgets/theme_toggle_widget.dart';
+import '/resources/widgets/logo_widget.dart';
+import '/bootstrap/providers.dart';
+import '/bootstrap/env.g.dart';
 
 void main() {
   // Initialize Nylo testing framework

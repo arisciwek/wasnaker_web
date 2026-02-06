@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/resources/themes/color_styles.dart';
+import '/resources/themes/color_styles.dart';
 import '/config/design.dart';
 import 'default_text_theme.dart';
 import 'package:nylo_framework/nylo_framework.dart';
