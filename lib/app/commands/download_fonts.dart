@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:nylo_framework/metro/ny_cli.dart';
 
-void main(arguments) => _DownloadFontsCommand(arguments).run();
+void main(List<String> arguments) => _DownloadFontsCommand(arguments).run();
 
 /// Download Fonts Command
 ///
@@ -36,9 +36,7 @@ class _DownloadFontsCommand extends NyCustomCommand {
     String assetDirectory = result.getString('assetDirectory')!;
 
     // If no font specified, try to detect from design.dart
-    if (fontName == null) {
-      fontName = await _detectFontFromDesign();
-    }
+    fontName ??= await _detectFontFromDesign();
 
     if (fontName == null) {
       // Ask user for font name
@@ -61,7 +59,7 @@ class _DownloadFontsCommand extends NyCustomCommand {
     final success = await _downloadFont(fontName, fontsDir.path);
 
     if (success) {
-      this.success('✅ Font downloaded to ${assetDirectory}/');
+      this.success('✅ Font downloaded to $assetDirectory/');
 
       // Add fonts to pubspec.yaml
       final addedToPubspec = await _addFontsToPubspec(fontName, assetDirectory);
@@ -242,14 +240,12 @@ class _DownloadFontsCommand extends NyCustomCommand {
         final fontsIndex =
             content.indexOf(RegExp(r'\n  fonts:\s*\n'), flutterMatch.start);
         final insertPos = content.indexOf('\n', fontsIndex + 1) + 1;
-        updatedContent = content.substring(0, insertPos) +
-            fontEntry +
-            content.substring(insertPos);
+        updatedContent =
+            '${content.substring(0, insertPos)}$fontEntry${content.substring(insertPos)}';
       } else {
         // Add fonts section right after "flutter:\n"
-        updatedContent = content.substring(0, flutterMatch.end) +
-            '  fonts:\n$fontEntry\n' +
-            content.substring(flutterMatch.end);
+        updatedContent =
+            '${content.substring(0, flutterMatch.end)}  fonts:\n$fontEntry\n${content.substring(flutterMatch.end)}';
       }
 
       await pubspecFile.writeAsString(updatedContent);

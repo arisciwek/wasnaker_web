@@ -1,6 +1,6 @@
 import 'package:nylo_framework/metro/ny_cli.dart';
 
-void main(arguments) => _MotivationalQuoteCommand(arguments).run();
+void main(List<String> arguments) => _MotivationalQuoteCommand(arguments).run();
 
 /// Motivational Quote Command
 ///
@@ -22,8 +22,9 @@ class _MotivationalQuoteCommand extends NyCustomCommand {
     }
 
     // confirmation prompt
-    final response =
-        confirm('$responseName, would you like to get a motivational quote?');
+    final response = confirm(
+      '$responseName, would you like to get a motivational quote?',
+    );
     if (response == false) {
       print('No problem, have a great day!');
       return;
@@ -33,7 +34,8 @@ class _MotivationalQuoteCommand extends NyCustomCommand {
     await withSpinner(
       task: () async {
         final List<dynamic>? data = await api(
-            (request) => request.get('https://zenquotes.io/api/today'));
+          (request) => request.get('https://zenquotes.io/api/today'),
+        );
 
         if (data == null || data.isEmpty) {
           error('\nNo data found');
@@ -42,10 +44,7 @@ class _MotivationalQuoteCommand extends NyCustomCommand {
 
         print("\n");
 
-        printQuote(
-          quote: data[0]['q'],
-          author: data[0]['a'],
-        );
+        printQuote(quote: data[0]['q'], author: data[0]['a']);
 
         print("\n");
       },
