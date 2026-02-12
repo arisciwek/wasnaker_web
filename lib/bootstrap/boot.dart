@@ -15,8 +15,6 @@ class Boot {
   /// Returns a [BootConfig] containing the setup and boot functions.
   static BootConfig nylo() => BootConfig(
         setup: () async {
-          WidgetsFlutterBinding.ensureInitialized();
-
           if (AppConfig.showSplashScreen) {
             runApp(SplashScreen.app());
           }
