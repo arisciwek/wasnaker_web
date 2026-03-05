@@ -6,6 +6,65 @@ import 'package:nylo_framework/nylo_framework.dart';
 /// ToastNotification provides a registry of toast notification styles.
 /// Use [ToastNotification.styles] to get the default styles map.
 class ToastNotification {
+  /// Create a fully custom toast notification with a builder function.
+  ///
+  /// Use this when you want complete control over the toast's widget tree.
+  /// Pair with a data-aware factory to access title, description, and custom data.
+  ///
+  /// Example:
+  /// ```dart
+  /// 'custom': (data) => ToastNotification.builder((context) {
+  ///   return Container(
+  ///     padding: EdgeInsets.all(16),
+  ///     child: Text(data['description'] ?? ''),
+  ///   );
+  /// }, animation: ToastAnimation.springFromTop()),
+  /// ```
+  static ToastStyleFactory builder(
+    Widget Function(BuildContext context) builder, {
+    ToastNotificationPosition? position,
+    Duration? duration,
+    ToastAnimation? animation,
+    ToastAnimation? reverseAnimation,
+    bool? dismissOtherToast,
+    TextDirection? textDirection,
+    Alignment? alignment,
+    Axis? axis,
+    Offset? startOffset,
+    Offset? endOffset,
+    Offset? reverseStartOffset,
+    Offset? reverseEndOffset,
+    bool? isHideKeyboard,
+    bool? isIgnoring,
+    CustomAnimationBuilder? animationBuilder,
+    CustomAnimationBuilder? reverseAnimBuilder,
+    ToastOnInitStateCallback? onInitState,
+  }) {
+    return (ToastMeta meta, void Function(ToastMeta) updateMeta) {
+      final updatedMeta = meta.copyWith(
+        position: position,
+        duration: duration,
+        animation: meta.animation ?? animation,
+        reverseAnimation: meta.reverseAnimation ?? reverseAnimation,
+        dismissOtherToast: meta.dismissOtherToast ?? dismissOtherToast,
+        textDirection: meta.textDirection ?? textDirection,
+        alignment: meta.alignment ?? alignment,
+        axis: meta.axis ?? axis,
+        startOffset: meta.startOffset ?? startOffset,
+        endOffset: meta.endOffset ?? endOffset,
+        reverseStartOffset: meta.reverseStartOffset ?? reverseStartOffset,
+        reverseEndOffset: meta.reverseEndOffset ?? reverseEndOffset,
+        isHideKeyboard: meta.isHideKeyboard ?? isHideKeyboard,
+        isIgnoring: meta.isIgnoring ?? isIgnoring,
+        animationBuilder: meta.animationBuilder ?? animationBuilder,
+        reverseAnimBuilder: meta.reverseAnimBuilder ?? reverseAnimBuilder,
+        onInitState: meta.onInitState ?? onInitState,
+      );
+      updateMeta(updatedMeta);
+      return Builder(builder: (context) => builder(context));
+    };
+  }
+
   /// Helper to create a toast style with defaults.
   ///
   /// Parameters:
@@ -18,7 +77,7 @@ class ToastNotification {
   static ToastStyleFactory style({
     required Widget icon,
     required Color color,
-    required String defaultTitle,
+    String? defaultTitle,
     ToastNotificationPosition? position,
     Duration? duration,
     ToastAnimation? animation,
@@ -99,16 +158,14 @@ class _ToastNotificationBase extends StatelessWidget {
                   ],
           ),
           child: InkWell(
-            onTap:
-                _toastMeta.action != null ? () => _toastMeta.action!() : null,
+            onTap: _toastMeta.action != null
+                ? () => _toastMeta.action!()
+                : null,
             borderRadius: BorderRadius.circular(16),
             child: Row(
               children: [
                 // Icon section
-                SizedBox(
-                  width: 50,
-                  child: Center(child: _toastMeta.icon),
-                ),
+                SizedBox(width: 50, child: Center(child: _toastMeta.icon)),
                 // Content section
                 Expanded(
                   child: Padding(

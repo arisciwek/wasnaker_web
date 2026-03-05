@@ -17,20 +17,20 @@ import 'package:nylo_framework/nylo_framework.dart';
 |-------------------------------------------------------------------------- */
 
 final class ToastNotificationConfig {
-  static final Map<String, ToastStyleFactory> styles = {
+  static final Map<String, dynamic> styles = {
     'success': ToastNotification.style(
       icon: const Icon(Icons.check, color: Colors.green, size: 20),
       color: Colors.green.shade50,
       defaultTitle: 'Success',
       animation: ToastAnimation.springFromTop(),
-        reverseAnimation: ToastAnimation.fadeOut()
+      reverseAnimation: ToastAnimation.fadeOut(),
     ),
     'warning': ToastNotification.style(
       icon: const Icon(Icons.error_outline, color: Colors.orange, size: 20),
       color: Colors.orange.shade50,
       defaultTitle: 'Oops!',
       animation: ToastAnimation.springFromTop(),
-        reverseAnimation: ToastAnimation.fadeOut()
+      reverseAnimation: ToastAnimation.fadeOut(),
     ),
     'info': ToastNotification.style(
       icon: const Icon(Icons.info, color: Colors.teal, size: 20),
@@ -45,7 +45,30 @@ final class ToastNotificationConfig {
       defaultTitle: 'Oops!',
       animation: ToastAnimation.springFromTop(),
       duration: Duration(seconds: 2),
-      reverseAnimation: ToastAnimation.fadeOut()
+      reverseAnimation: ToastAnimation.fadeOut(),
+    ),
+    'my_custom_toast': (data) => ToastNotification.builder(
+      (context) {
+        return Container(
+          height: 90,
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text(data['title'] ?? '')],
+          ),
+        );
+      },
+      animation: ToastAnimation.springFromTop(),
+      reverseAnimation: ToastAnimation.fadeOut(),
+      duration: const Duration(seconds: 2),
     ),
   };
 }
