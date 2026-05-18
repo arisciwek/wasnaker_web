@@ -48,16 +48,19 @@ class _LoginPageState extends NyPage<LoginPage> {
         setState(() => _errorMessage = 'Connection failed. Check your network.');
         return;
       }
-      if (response['status'] != true) {
-        setState(() => _errorMessage = response['message'] ?? 'Login failed');
+      if (response['error'] != null) {
+        setState(() => _errorMessage = response['error'] ?? 'Login failed');
         return;
       }
 
-      final data  = response['data'];
-      final token = data['token'];
-      final staff = data['staff'];
+      final staff  = response['user'];
+      final tokens = response['tokens'];
 
-      await Auth.set((_) => {'token': token, 'staff': staff});
+      await Auth.set((_) => {
+        'access_token':  tokens['access_token'],
+        'refresh_token': tokens['refresh_token'],
+        'staff': staff,
+      });
 
       showToastSuccess(
         title: 'Welcome back',

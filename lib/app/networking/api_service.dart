@@ -1,19 +1,18 @@
-import 'package:nylo_framework/nylo_framework.dart';
 import 'package:wasnaker_core/wasnaker_core.dart';
 import '/bootstrap/decoders.dart';
 import 'dio/interceptors/bearer_auth_interceptor.dart';
+import 'package:nylo_framework/nylo_framework.dart';
 
 class ApiService extends WasnakerApiService {
   ApiService()
       : super(
           decoders: modelDecoders,
           useNetworkLogger: true,
-          baseOptions: (baseOptions) {
-            return baseOptions
+          baseOptions: (BaseOptions options) {
+            return options
               ..headers.addAll({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-Api-Key': getEnv('API_KEY', defaultValue: ''),
               });
           },
         );
@@ -24,12 +23,12 @@ class ApiService extends WasnakerApiService {
         BearerAuthInterceptor: BearerAuthInterceptor(),
       };
 
-  // ── Auth endpoints ────────────────────────────────────────────────────────
+  // ── Auth — apps module ────────────────────────────────────────────────────
 
   Future<dynamic> login(String email, String password) async {
     return await network(
       request: (request) => request.post(
-        '/institutions/auth/login',
+        '/auth/login',
         data: {'email': email, 'password': password},
       ),
     );
@@ -37,13 +36,16 @@ class ApiService extends WasnakerApiService {
 
   Future<dynamic> me() async {
     return await network(
-      request: (request) => request.get('/institutions/auth/me'),
+      request: (request) => request.get('/auth/me'),
     );
   }
 
-  Future<dynamic> logout() async {
+  Future<dynamic> refresh(String refreshToken) async {
     return await network(
-      request: (request) => request.post('/institutions/auth/logout'),
+      request: (request) => request.post(
+        '/auth/refresh',
+        data: {'refresh_token': refreshToken},
+      ),
     );
   }
 }
