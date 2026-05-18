@@ -4,7 +4,7 @@
 # Official repository: https://github.com/nylo-core/nylo
 # Author: Anthony Gordon <https://github.com/agordn52>
 
-name: flutter_app
+name: wasnaker_institution
 description: A new Nylo Flutter application.
 
 publish_to: 'none'
@@ -25,6 +25,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+dependency_overrides:
+  nylo_support:
+    path: ../nylo-core-support
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4

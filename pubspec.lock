@@ -582,13 +582,12 @@ packages:
     source: hosted
     version: "7.1.17"
   nylo_support:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: nylo_support
-      sha256: "6479188adc0aaf01d3411dcefb89b396cfe7b50411eaf4d36ce48d2da3c5a489"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.24.2"
+      path: "../nylo-core-support"
+      relative: true
+    source: path
+    version: "7.25.0"
   objective_c:
     dependency: transitive
     description:
