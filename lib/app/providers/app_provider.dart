@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import '/app/networking/api_service.dart';
 import '/config/storage_keys.dart';
 import '/config/toast_notification.dart';
 import '/bootstrap/decoders.dart';
@@ -37,8 +39,30 @@ class AppProvider implements NyProvider {
 
   @override
   boot(Nylo nylo) async {
-    // NyLogger.onLog = (NyLogEntry entry) {
-    //   // Listen to log entries
-    // };
+    WidgetsBinding.instance.addObserver(_AuthRefreshObserver());
+  }
+}
+
+/// Refreshes staff data (capabilities, membership) from /auth/me
+/// every time the app comes back to foreground.
+class _AuthRefreshObserver with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refresh();
+    }
+  }
+
+  Future<void> _refresh() async {
+    if (Auth.data() == null) return;
+    try {
+      final response = await api<ApiService>((s) => s.me());
+      if (response?['user'] != null) {
+        await Auth.set((data) => {
+          ...(data as Map? ?? {}),
+          'staff': response['user'],
+        });
+      }
+    } catch (_) {}
   }
 }
