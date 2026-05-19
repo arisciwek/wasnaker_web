@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wasnaker_core/wasnaker_core.dart';
 import '/app/networking/api_service.dart';
 import '/config/storage_keys.dart';
 import '/config/toast_notification.dart';
@@ -39,7 +40,31 @@ class AppProvider implements NyProvider {
 
   @override
   boot(Nylo nylo) async {
+    _registerDashboard();
     WidgetsBinding.instance.addObserver(_AuthRefreshObserver());
+  }
+
+  void _registerDashboard() {
+    _registerNavFromPerfex();
+  }
+
+  void _registerNavFromPerfex() {
+    final items = Auth.data()?['staff']?['menu_items'] as List?;
+    if (items == null) return;
+
+    for (final item in items) {
+      final feature = item['feature'] as String? ?? '';
+      final label   = item['label']   as String? ?? feature;
+      final icon    = item['icon']    as String? ?? 'fa-solid fa-circle';
+      final order   = (item['order']  as num?)?.toInt() ?? 99;
+
+      DashboardRegistry.registerNav(DashboardNavItem(
+        label: label,
+        order: order,
+        iconBuilder: () => FaIconMapper.fromClass(icon),
+        onTap: () {},
+      ));
+    }
   }
 }
 
